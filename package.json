@@ -1,0 +1,80 @@
+{
+  "name": "ussd-sns",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.14.3",
+    "jest": "^23.5.0",
+    "lint-staged": "^7.2.2",
+    "nodemon": "1.18.4",
+    "prettier": "^1.11.1"
+  },
+  "scripts": {
+    "pretest": "eslint .",
+    "precommit": "lint-staged",
+    "test": "jest --coverage",
+    "start": "nodemon src/index"
+  },
+  "engines": {
+    "npm": ">= 10.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "prettier"
+    ],
+    "env": {
+      "jest": true,
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "printWidth": 90
+        }
+      ]
+    },
+    "plugins": [
+      "prettier"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "reporters": [
+      "default",
+      "jest-junit"
+    ],
+    "coverageReporters": [
+      "text",
+      "html",
+      "cobertura"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bluebird": "^3.5.2",
+    "bunyan": "1.8.12",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.0",
+    "jest-junit": "5.1.0",
+    "memcached": "^2.2.2",
+    "pug": "^2.0.3",
+    "string-template": "^1.0.0"
+  }
+}
