@@ -7,14 +7,11 @@ const client = new Memcached(config.dbUri, {
   retry: 10000,
   remove: true
 });
-client.connect(
-  config.dbUri,
-  (err, conn) => {
-    if (err) {
-      logger.info(`Database connection to MEMCACHED failed ${conn.server} ${err}!`);
-      return process.exit(1);
-    }
-    logger.info(`MEMCACHED DB connection successfull!!`);
-  }
-);
+
+client.connect(config.dbUri, (err, conn) => {
+  if (err) throw new Error('Failed to connect');
+
+  console.log(`MEMCACHED DB connection successfull!!`);
+});
+
 module.exports = client;
