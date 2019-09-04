@@ -1,42 +1,59 @@
-const fs = require('fs');
-const xml2js = require('xml2js');
-const request = require('request');
-const URL = 'http://10.102.33.46:2160/getAccountDetails';
-const template = '';
+const fs = require("fs");
+const xml2js = require("xml2js");
+const request = require("request");
+const URL = "http://10.102.33.46:2160/getAccountDetails";
+
+const ACCOUNT = "000400067342612";
+const Id = "ACCOUNT";
+const namSpaceValue =
+  "http://www.developer.bk.rw/serviceprovider/frontend/client";
+
+const username = "RETJpSDzwYQLBwujnpOVEJnI";
+const password = "vuTYUExpMRilFQMkvpfHzeDMpmDQuejffTOe";
+
 const object = {
-  'ns1:getDetails': {
+  "ns1:getDetails": {
     $: {
-      'xmlns:ns1': 'http://www.developer.bk.rw/serviceprovider/frontend/client'
+      "xmlns:ns1": namSpaceValue
     },
-    'ns1:Value': '000409104324251',
-    'ns1:Id': 'ACCOUNT'
+    "ns1:Value": ACCOUNT,
+    "ns1:Id": Id
   }
 };
 
 const builder = new xml2js.Builder();
-const xml = builder.buildObject(object);
-console.log(xml);
+const body = builder.buildObject(object);
+//console.log(body);
 
 const options = {
-  method: 'POST',
+  method: "POST",
   url: URL,
   auth: {
-    username: 'RETJpSDzwYQLBwujnpOVEJnI',
-    password: 'vuTYUExpMRilFQMkvpfHzeDMpmDQuejffTOe'
+    username,
+    password
   },
-  headers: {
-    'Content-Type': 'text/xml'
-  },
-  body: xml
+  body
 };
-const answer = request(options, (error, response, body) => {
-  console.log('error:', error);
-  console.log('statusCode:', response && response.statusCode);
-  console.log('body', body);
+request(options, (error, response, body) => {
+  // console.log("error:", error);
+  // console.log("statusCode:", response && response.statusCode);
+  console.log(body);
+
+  const jsonResponse = new xml2js.Parser({
+    xmlns: false,
+    ignoreAttrs: true,
+    trim: true,
+    explicitArray: false
+  });
+
+  jsonResponse.parseString(body, (err, result) => {
+    const fin = JSON.stringify(result);
+    console.log(stripPrefix(fin));
+  });
+
+  // return body;
 });
 
-console.log(answer);
-
-// const builder = new xml2js.Builder();
-// const xml = builder.buildObject(object);
-console.log(xml);
+const stripPrefix = async input => {
+  return input.split("ns5:").join("");
+};
